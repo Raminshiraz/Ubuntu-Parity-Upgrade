@@ -1,8 +1,21 @@
-# Ubuntu-Parity-Upgrade
+# Parity-Upgrade
 
 **Deterministic Ubuntu package upgrades with pre-production validation.**
 
 Parity-Upgrade is a single Bash script that implements a controlled, multi-stage workflow for upgrading Ubuntu servers. It simulates the upgrade on production first, replicates the exact post-upgrade package state onto a dev/staging server for testing, and only then applies the real upgrade to production — all pinned to the same Ubuntu snapshot timestamp for full reproducibility.
+
+### Why This Exists
+
+A standard `apt-get dist-upgrade` on a production server is a one-shot, irreversible operation. You find out whether your application survives the upgraded packages only after the upgrade has already happened — on production, in front of your users. If something breaks, you are restoring from a snapshot under pressure.
+
+Parity-Upgrade eliminates that uncertainty. The workflow is:
+
+1. **Simulate the upgrade on production** without modifying it, capturing the exact set of packages and versions that would result.
+2. **Bring a dev/staging server to that exact post-upgrade state** — same package versions, same dependency tree, same kernel — so it is identical to what production will become.
+3. **Deploy your application onto that upgraded dev server and run your full test suite.** This is where you discover incompatibilities, broken dependencies, configuration conflicts, or runtime failures — safely, on a machine that does not matter.
+4. **Only after your tests pass**, execute the real upgrade on production, pinned to the same snapshot, knowing the outcome has already been validated.
+
+The script exists because the cost of discovering a broken upgrade on production is high, and the cost of discovering it on dev first is near zero. Every operation is pinned to a single Ubuntu Snapshot Service timestamp, so the simulation, the dev install, and the production upgrade all resolve to the same package versions regardless of when each step runs or what has been published to the Ubuntu mirrors in between.
 
 > **No software rollback is included.** Always take a VM-level snapshot before running `apply-prod`.
 
@@ -10,6 +23,7 @@ Parity-Upgrade is a single Bash script that implements a controlled, multi-stage
 
 ## Table of Contents
 
+- [Why This Exists](#why-this-exists)
 - [How It Works](#how-it-works)
 - [Compatible Distributions](#compatible-distributions)
 - [Requirements](#requirements)
