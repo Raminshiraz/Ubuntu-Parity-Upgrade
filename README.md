@@ -6,7 +6,7 @@ Parity-Upgrade is a single Bash script that implements a controlled, multi-stage
 
 ### Why This Exists
 
-A standard `apt-get dist-upgrade` on a production server is a one-shot, irreversible operation. You find out whether your application survives the upgraded packages only after the upgrade has already happened — on production, in front of your users. If something breaks, you are restoring from a snapshot under pressure.
+A standard `apt upgrade`or a `apt-get dist-upgrade` on a production server is a one-shot, irreversible operation. You find out whether your application survives the upgraded packages only after the upgrade has already happened — on production, in front of your users. If something breaks, you are restoring from a snapshot under pressure.
 
 Parity-Upgrade eliminates that uncertainty. The workflow is:
 
