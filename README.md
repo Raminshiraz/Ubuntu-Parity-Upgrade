@@ -1,4 +1,4 @@
-# Parity-Upgrade
+# Ubuntu-Parity-Upgrade
 
 **Deterministic Ubuntu package upgrades with pre-production validation.**
 
